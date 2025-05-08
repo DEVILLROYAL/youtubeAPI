@@ -10,8 +10,9 @@ const youtubeRoutes = require('./routes/youtubeRoutes');
 // const animeRoutes = require('./routes/animeRoutes');
 
 // Use routes
-app.use('/hindi-dub-anime', youtubeRoutes);  // Combine logic in youtubeRoutes
-app.use('/playlist', youtubeRoutes);         // Or, create a separate route for playlist
+app.use('/api/hindi-dub-anime', youtubeRoutes);  // Combine logic in youtubeRoutes
+app.use('/api/playlist', youtubeRoutes);
+app.use('/api/anime-detail', youtubeRoutes);         // Or, create a separate route for playlist
 
 // Start the server
 app.listen(PORT, () => {

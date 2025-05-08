@@ -7,8 +7,10 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Controller to fetch Hindi Dub playlists + Jikan anime details
 const getHindiDubAnime = async (req, res) => {
+
   try {
     // Fetch playlists from Muse India channel
+    const {search} = req.query;
     const ytRes = await axios.get('https://www.googleapis.com/youtube/v3/playlists', {
       params: {
         part: 'snippet',
@@ -17,12 +19,15 @@ const getHindiDubAnime = async (req, res) => {
         key: YOUTUBE_API_KEY,
       }
     });
-
     const playlists = ytRes.data.items;
     const hindiPlaylists = playlists.filter(p =>
       /hindi/i.test(p.snippet.title)
     );
-
+    if (search) {
+      hindiPlaylists = hindiPlaylists.filter(p =>
+        p.snippet.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
     const animeDetails = [];
 
     for (const playlist of hindiPlaylists) {
@@ -30,13 +35,12 @@ const getHindiDubAnime = async (req, res) => {
       const youtubeTitle = playlist.snippet.title;
       const searchQuery = youtubeTitle.replace(/\[.*?\]|\(.*?\)|hindi dub/gi, '').trim();
 
+
       try {
         await sleep(1500); // Prevent 429
-
         const animeRes = await axios.get('https://api.jikan.moe/v4/anime', {
           params: { q: searchQuery, limit: 1 }
         });
-
         const anime = animeRes.data.data[0];
 
         if (anime) {
@@ -100,4 +104,50 @@ const getPlaylistVideos = async (req, res) => {
   }
 };
 
-module.exports = { getHindiDubAnime, getPlaylistVideos };
+const getAnimeInfo = async (req, res) => {
+  const { playlistId, videoTitle } = req.params;
+
+  try {
+    const cleanedTitle = videoTitle
+      .replace(/\[.*?\]|\(.*?\)|hindi dub|official|full series|[\-_]/gi, '')
+      .trim();
+
+    const animeRes = await axios.get('https://api.jikan.moe/v4/anime', {
+      params: { q: cleanedTitle, limit: 1 },
+    });
+
+    const anime = animeRes.data.data[0];
+
+    if (!anime) {
+      return res.status(404).json({ message: 'Anime not found in Jikan API.' });
+    }
+
+    res.json({
+      playlistId,
+      videoTitle,
+      cleanedTitle,
+      animeTitle: anime.title,
+      image: anime.images.jpg.large_image_url,
+      synopsis: anime.synopsis,
+      score: anime.score,
+      type: anime.type,
+      source: anime.source,
+      rating: anime.rating,
+      duration: anime.duration,
+      episodes: anime.episodes,
+      url: anime.url,
+      trailer: {
+        youtube_id: anime.trailer?.youtube_id || null,
+        url: anime.trailer?.url || null,
+        embed_url: anime.trailer?.embed_url || null,
+        thumbnail: anime.trailer?.images?.maximum_image_url || null,
+      }
+    });
+  } catch (err) {
+    console.error('Error fetching selected anime detail:', err.message);
+    res.status(500).json({ error: 'Failed to fetch anime detail.' });
+  }
+};
+
+
+module.exports = { getHindiDubAnime, getPlaylistVideos, getAnimeInfo };
