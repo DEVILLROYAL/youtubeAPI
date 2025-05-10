@@ -1,0 +1,11 @@
+  Main Routes:-
+1 Home Page Route = fetches homepage as an array of youtube channels playlist and meta data from jikan api related to the name of playlist title.
+2 Detail Page Route = request anime titel and playlist id from home page route data and provide detail view meta data from jikan api relates to anime title.
+3 Playlist Page Route = request playlist id from detail page route and provides the video playlist with a video player similar to youtube.
+
+  Types of routes:-
+  Home Page Route:
+1 Hindi route: fetches the hindi dub anime video playlist.                                ( hindi language )
+2 English route: fetches the english dub anime playlist.                                  ( english language )
+3 English subtitles route: fetches the anime playlist that support english subtitles.     ( english subtitles )
+4 Other route: fetches rest of anime available in youtube.                                ( any language )
