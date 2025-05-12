@@ -4,7 +4,7 @@ const MUSE_INDIA_CHANNEL_ID = 'UCYYhAzgWuxPauRXdPpLAX3Q';
 const MUSA_ASIA_CHANNEL_ID = 'UCGbshtvS9t-8CW11W7TooQg';
 const NodeCache = require('node-cache');
 const cache = new NodeCache({ stdTTL: 3600 });
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const { sleep } = require('../utils/apiHelpers');
 
 const getHome = async (req, res) => {
   const cacheKey = 'home';

@@ -9,3 +9,13 @@
 2 English route: fetches the english dub anime playlist.                                  ( english language )
 3 English subtitles route: fetches the anime playlist that support english subtitles.     ( english subtitles )
 4 Other route: fetches rest of anime available in youtube.                                ( any language )
+
+overview of homepage request
+in home request {
+a> hindi playlist.
+b> english playlist.
+c> english subtitles playlist.
+d> Other playlist ( reat of playlists )
+}
+
+flowchart of home page request
