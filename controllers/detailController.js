@@ -8,7 +8,7 @@ const getAnime = async (req, res) => {
     const search = req.query.q;
     const limit = req.query.limit;
     const playlistId = req.query.playlistId;
-    const cacheKey = `anime:${search}:${limit}`;
+    const cacheKey = `anime:${search}:${playlistId}`;
 
     const cachedData = cache.get(cacheKey);
     if(cachedData) {
