@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { Result } = require('express-validator');
 const NodeCache = require('node-cache');
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const cache = new NodeCache({ stdTTL:3600 });
 
 const getAnime = async (req, res) => {
@@ -8,7 +9,7 @@ const getAnime = async (req, res) => {
     const search = req.query.q;
     const limit = req.query.limit;
     const playlistId = req.query.playlistId;
-    const cacheKey = `anime:${search}:${playlistId}`;
+    const cacheKey = `anime:${playlistId}`;
 
     const cachedData = cache.get(cacheKey);
     if(cachedData) {
@@ -17,9 +18,20 @@ const getAnime = async (req, res) => {
     }
 
     try{
+        const titleFetch = await axios.get('https://www.googleapis.com/youtube/v3/playlists', {
+          params: {
+              part: 'snippet',
+              id: playlistId,
+              key: YOUTUBE_API_KEY,
+            }
+          });
+          const titleData = titleFetch.data.items;
+          const theTitle = titleData[0]?.snippet?.title;
+          const animeTitle = theTitle.replace(/\[.*?\]|\(.*?\)|hindi dub| Muse IN/gi, '').trim();
+
         const animeRes = await axios.get('https://api.jikan.moe/v4/anime', {
           params: {
-            q: search,
+            q: animeTitle,
             limit: limit || 1
           }
         });

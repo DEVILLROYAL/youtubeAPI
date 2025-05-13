@@ -1,7 +1,7 @@
 const axios = require('axios');
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const MUSE_INDIA_CHANNEL_ID = 'UCYYhAzgWuxPauRXdPpLAX3Q';
-const MUSA_ASIA_CHANNEL_ID = 'UCGbshtvS9t-8CW11W7TooQg';
+const MUSA_ASIA_CHANNEL_ID = 'UCGbshtvS9t-8CW11W7TooQg'; 
 const NodeCache = require('node-cache');
 const cache = new NodeCache({ stdTTL: 3600 });
 const { sleep } = require('../utils/apiHelpers');
