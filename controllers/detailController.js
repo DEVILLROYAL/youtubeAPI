@@ -38,7 +38,9 @@ const getAnime = async (req, res) => {
         const animeData = animeRes.data.data[0];
         if (animeData) {
             animeArray.push({
+            youtubeTitle: animeTitle,
             animeTitle: animeData.title,
+            engTitle: animeData.title_english,
             playlistId:playlistId,
             image: animeData.images.jpg.large_image_url,
             description: animeData.synopsis,
