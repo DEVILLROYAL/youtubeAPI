@@ -133,22 +133,25 @@ _Some videos may be private and may not display thumbnails or details._
 
 ## Usage Example
 
-Import and use the main functions in your JavaScript application:
+You can call the API endpoints directly using fetch in your JavaScript code (browser or Node.js). Here are some example usages:
 
 ```javascript
-const { searchVideos, getChannelDetails } = require('./src/youtube');
+// Example: Get home playlists
+fetch('https://youtubeapi-tmc9.onrender.com/api/home')
+  .then(res => res.json())
+  .then(data => console.log('Playlists:', data));
 
-// Example: Search for videos
-searchVideos('learn JavaScript').then(results => {
-    console.log(results);
-});
+// Example: Get anime details by playlistId
+fetch('https://youtubeapi-tmc9.onrender.com/api/anime?playlistId=YOUR_PLAYLIST_ID')
+  .then(res => res.json())
+  .then(data => console.log('Anime Details:', data));
 
-// Example: Get channel details
-getChannelDetails('UC_x5XG1OV2P6uZZ5FSM9Ttw').then(details => {
-    console.log(details);
-});
+// Example: Get videos in a playlist
+fetch('https://youtubeapi-tmc9.onrender.com/api/playlist?playlistId=YOUR_PLAYLIST_ID')
+  .then(res => res.json())
+  .then(data => console.log('Playlist Videos:', data));
 ```
-
+Replace YOUR_PLAYLIST_ID with the actual playlist ID you want to query.
 ---
 
 ## Project Structure
